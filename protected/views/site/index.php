@@ -70,21 +70,14 @@ foreach ($shops as $shop)
 $(document).ready(function() {
 /*住所を貼り付けてもらう処理*/
 $("#getad").click(function() {
-
-
     var sad = $("#address").val();
-alert(sad);
     var geocoder = new google.maps.Geocoder();
-
-
-point = new google.maps.LatLng(0, 0);
-var marker = new google.maps.Marker({
+    point = new google.maps.LatLng(0, 0);
+    var marker = new google.maps.Marker({
       position: point,
       map: map,
       draggable: true
-  });
-
-
+    });
    geocoder.geocode({ 'address': sad}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
@@ -93,24 +86,17 @@ var marker = new google.maps.Marker({
 		name: $("#address").val(),
 		lat: results[ 0 ].geometry.location.lat(),
 		lng: results[ 0 ].geometry.location.lng(),
-		
  })
 .done(function(data) {
-alert("Data Loaded: " + data);
 });
       } else {
         alert("住所から場所を特定できませんでした。最初にビル名などを省略し、番地までの検索などでお試しください。");
       }
     });
-
     return false;
-
   });
 });
 </script>
-
-
-
 
 <style type="text/css">
 #map_canvas {
@@ -133,7 +119,6 @@ alert("Data Loaded: " + data);
 </form>
 
 <div id="map_canvas"></div>
-
 </body>
 </html>
 
