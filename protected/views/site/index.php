@@ -29,7 +29,7 @@
 foreach ($shops as $shop)
 {
 ?>
-	data.push({position: new google.maps.LatLng(<?php echo $shop->lat ?>,<?php echo $shop->lng ?>), content: '<?php echo $shop->name?>'});
+	data.push({position: new google.maps.LatLng(<?php echo $shop->lat ?>,<?php echo $shop->lng ?>), content: '<?php echo $shop->name?>',detail:'<?php echo $shop->impression?>'});
 <?php
 }
 ?>
@@ -49,7 +49,7 @@ foreach ($shops as $shop)
 		var myMarker = new google.maps.Marker({
 			position: data[i].position,
 			map:map,
-			title:"hogehoge",
+			title:data[i].content,
 			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麺|7FFF00|000000'
 		});
 		attachMessage(myMarker,data[i].content);
@@ -83,7 +83,9 @@ $("#getad").click(function() {
         map.setCenter(results[0].geometry.location);
         var p = marker.position;
 	$.post("index.php?r=site/add", { 
-		name: $("#address").val(),
+		name: $("#name").val(),
+		impression: $("#impression").val(),
+		address: $("#address").val(),
 		lat: results[ 0 ].geometry.location.lat(),
 		lng: results[ 0 ].geometry.location.lng(),
  })
@@ -109,16 +111,27 @@ $("#getad").click(function() {
 
 <body>
 <form>
-<label class="label">地図表示位置</label>
-緯度: <input type="text" name="lat" id="lat" />
-経度: <input type="text" name="lng" id="lng" />
-店名: <input type="text" name="name" id="name" />
-住所: <input type="text" name="address" id="address" />
-
+<label class="label">お店の住所と名前を入れてください。</label>
+<br>
+店名: <input type="text" name="name" id="name" /><br>
+住所: <input type="text" name="address" id="address" /><br>
+感想: <input type="text" name="impression" id="impression" /><br>
 <button id="getad">お店を登録</button>
 </form>
+<div id="map_canvas" style='float:left' ></div>
+<div style='float:right'>
+<?php
+foreach($shops as $shop)
+{
+	echo $shop->name.'<br>';
+	echo $shop->address.'<br>';
+	echo $shop->impression.'<br><br>';
+}
 
-<div id="map_canvas"></div>
+?>
+
+
+</div>
 </body>
 </html>
 

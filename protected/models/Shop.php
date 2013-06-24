@@ -2,6 +2,10 @@
 
 Class Shop extends EMongoDocument
 {
+	/*住所*/
+	public $address;
+	/*感想*/
+	public $impression;
 	/*店舗名*/
 	public $name;
 	/*緯度*/
@@ -36,6 +40,7 @@ Class Shop extends EMongoDocument
           'lat'  => '緯度',
           'lng'  => '経度',
           'name'   => '店舗名',
+          'address'   => '住所',
         );
       }
     }
