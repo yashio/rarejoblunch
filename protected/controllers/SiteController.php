@@ -47,7 +47,7 @@ class SiteController extends Controller
 		$shop->address = $_POST['address'] ;
 		$shop->lat     = $_POST['lat'];
 		$shop->lng     = $_POST['lng'];
-		var_dump($shop->save());
+		$shop->save();
 	//	$this->redirect('/site/index');
 			
 	}
