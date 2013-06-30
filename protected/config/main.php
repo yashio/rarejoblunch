@@ -5,12 +5,14 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'Lunch list',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','bootstrap'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -44,6 +46,9 @@ return array(
 			'fsyncFlag'        => true,
 			'safeFlag'         => true,
 			'useCursor'        => false
+			),
+		'bootstrap' => array(
+			'class'=>'bootstrap.components.Bootstrap'
 			),
 	// uncomment the following to enable URLs in path-format
 	/*	
