@@ -123,7 +123,7 @@ $("#getad").click(function() {
 <br>
 店名: <input type="text" name="name" id="name" /><br>
 住所: <input type="text" name="address" id="address" /><br>
-種別: <?
+種別: <?php
 echo CHtml::dropDownList('kind',0,array('ラーメン','ランチ','麦酒'));
 ?>
 <br>
