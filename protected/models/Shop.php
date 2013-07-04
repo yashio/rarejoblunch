@@ -12,6 +12,8 @@ Class Shop extends EMongoDocument
 	public $lat;
 	/*軽度*/
 	public $lng;
+	/*種別*/
+	public $kind;
 
 	// This has to be defined in every model, this is same as with standard Yii ActiveRecord
 	public static function model($className=__CLASS__)
@@ -41,6 +43,7 @@ Class Shop extends EMongoDocument
           'lng'  => '経度',
           'name'   => '店舗名',
           'address'   => '住所',
+          'kind'   => '種別',
         );
       }
     }

@@ -28,8 +28,15 @@
 <?php
 foreach ($shops as $shop)
 {
+//var_dump($shop);
+if(is_null($shop->kind) === true){
+	$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麺|ffffff|000000';
+}else{
+
+	$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麦|ffff00|000000';
+}
 ?>
-	data.push({position: new google.maps.LatLng(<?php echo $shop->lat ?>,<?php echo $shop->lng ?>), content: '<?php echo $shop->name?>',detail:'<?php echo $shop->impression?>'});
+	data.push({position: new google.maps.LatLng(<?php echo $shop->lat ?>,<?php echo $shop->lng ?>), content: '<?php echo $shop->name?>',detail:'<?php echo $shop->impression?>',kind:'<?php echo $value ?>'});
 <?php
 }
 ?>
@@ -50,7 +57,7 @@ foreach ($shops as $shop)
 			position: data[i].position,
 			map:map,
 			title:data[i].content,
-			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麺|7FFF00|000000'
+			icon:data[i].kind
 		});
 		attachMessage(myMarker,data[i].content);
 	}	
@@ -86,6 +93,7 @@ $("#getad").click(function() {
 		name: $("#name").val(),
 		impression: $("#impression").val(),
 		address: $("#address").val(),
+		kind: $("#kind").val(),
 		lat: results[ 0 ].geometry.location.lat(),
 		lng: results[ 0 ].geometry.location.lng(),
  })
@@ -102,7 +110,7 @@ $("#getad").click(function() {
 
 <style type="text/css">
 #map_canvas {
-  width: 600px;
+  width: 500px;
   height: 371px;
 }
 </style>
@@ -115,22 +123,36 @@ $("#getad").click(function() {
 <br>
 店名: <input type="text" name="name" id="name" /><br>
 住所: <input type="text" name="address" id="address" /><br>
+種別: <?
+echo CHtml::dropDownList('kind',0,array('ラーメン','ランチ','麦酒'));
+?>
+<br>
 感想: <input type="text" name="impression" id="impression" /><br>
 <button id="getad">お店を登録</button>
 </form>
 <div id="map_canvas" style='float:left' ></div>
-<div style='float:right'>
+<div style='float:center'>
+<table class='table table-condensed'>
+
+<thead>
+<tr>
+<th width=50px>店舗名</th>
+<th width=50px>感想</th>
+</tr>
+</thead>
+<tbody>
 <?php
 foreach($shops as $shop)
 {
-	echo $shop->name.'<br>';
-	echo $shop->address.'<br>';
-	echo $shop->impression.'<br><br>';
+echo '<tr>';	
+echo '<td>'.$shop->name.'</td>';
+	echo '<td>'.$shop->impression.'</td>';
+echo '</tr>';	
 }
 
 ?>
-
-
+</tbody>
+</table>
 </div>
 </body>
 </html>
