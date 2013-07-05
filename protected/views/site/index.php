@@ -26,15 +26,17 @@
 	function initialize() {
 	var data = new Array();//マーカー位置の緯度経度
 <?php
-foreach ($shops as $shop)
-{
-//var_dump($shop);
-if(is_null($shop->kind) === true){
-	$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麺|ffffff|000000';
-}else{
-
-	$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麦|ffff00|000000';
-}
+	foreach ($shops as $shop)
+	{
+		if($shop->kind == 1){
+			$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=昼|FFA07A|000000';
+		}else if($shop->kind == 2){
+			$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麦|FFA500|000000';
+		}else if($shop->kind == 0){
+			$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=麺|ffffff|000000';
+		}else{
+			$value = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=99|ffff00|000000';
+		}
 ?>
 	data.push({position: new google.maps.LatLng(<?php echo $shop->lat ?>,<?php echo $shop->lng ?>), content: '<?php echo $shop->name?>',detail:'<?php echo $shop->impression?>',kind:'<?php echo $value ?>'});
 <?php
@@ -89,7 +91,7 @@ $("#getad").click(function() {
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
         var p = marker.position;
-	$.post("index.php?r=site/add", { 
+	$.post("/site/add", { 
 		name: $("#name").val(),
 		impression: $("#impression").val(),
 		address: $("#address").val(),
@@ -114,10 +116,8 @@ $("#getad").click(function() {
   height: 371px;
 }
 </style>
-
 </head>
 
-<body>
 <form>
 <label class="label">お店の住所と名前を入れてください。</label>
 <br>
@@ -154,7 +154,5 @@ echo '</tr>';
 </tbody>
 </table>
 </div>
-</body>
-</html>
 
 
