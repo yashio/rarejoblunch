@@ -46,7 +46,7 @@
 	/* 地図のオプション設定 */
 	var myOptions={
 		/*初期のズーム レベル */
-		zoom: 17,
+		zoom: 18,
 		/* 地図の中心点 */
 		center: new google.maps.LatLng(35.65441980000001,139.70141490000003),
 		/* 地図タイプ */
@@ -118,6 +118,8 @@ $("#getad").click(function() {
 </style>
 </head>
 
+<!-- form -->
+<div style="float:left; width:420px;">
 <form>
 <fieldset>
 <i class ="icon-home"></i> <input type="text" name="name" id="name" class="input-large" placeholder="Shop Name" /><br>
@@ -128,22 +130,31 @@ $("#getad").click(function() {
 <button id="getad">お店を登録</button>
 </fieldset>
 </form>
-<div id="map_canvas" style='float:left' ></div>
-<div style='float:center'>
-<table class='table table-condensed'>
+</div>
 
+<div id="map_canvas" style="border-style: solid ; border-width: 1px; padding: 10px 5px 10px 20px; border-color: orange; color: green; background-color: lavender; width: 400px; border-radius: 10px; box-shadow: 5px 5px 5px #AAA; width:500px;">
+</div>
+<br>
+
+<div style="">
+<table class='table table-bordered'>
 <thead>
 <tr>
-<th width=50px>店舗名</th>
-<th width=50px>感想</th>
+<th>Shop Name</th>
+<th>Impress</th>
 </tr>
 </thead>
 <tbody>
 <?php
 foreach($shops as $shop)
 {
-echo '<tr>';	
-echo '<td>'.$shop->name.'</td>';
+echo '<tr>';
+
+$button ="btn btn-info";
+if($shop->kind ==2){
+$button ='btn btn-warning';
+}	
+echo '<td><button class="'.$button.'">'.$shop->name.'</button></td>';
 	echo '<td>'.$shop->impression.'</td>';
 echo '</tr>';	
 }
@@ -152,5 +163,8 @@ echo '</tr>';
 </tbody>
 </table>
 </div>
+
+
+
 
 
