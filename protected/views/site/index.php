@@ -119,16 +119,14 @@ $("#getad").click(function() {
 </head>
 
 <form>
-<label class="label">お店の住所と名前を入れてください。</label>
+<fieldset>
+<i class ="icon-home"></i> <input type="text" name="name" id="name" class="input-large" placeholder="Shop Name" /><br>
+<i class ="icon-map-marker"></i> <input type="text" name="address" id="address" Class="input-large" placeholder="Address"><br>
+<i class="icon-tag" ></i> <?php echo CHtml::dropDownList('kind',0,array('ラーメン','ランチ','麦酒'),array("class"=>"span2"));?>
 <br>
-店名: <input type="text" name="name" id="name" /><br>
-住所: <input type="text" name="address" id="address" /><br>
-種別: <?php
-echo CHtml::dropDownList('kind',0,array('ラーメン','ランチ','麦酒'));
-?>
-<br>
-感想: <input type="text" name="impression" id="impression" /><br>
+<i class="icon-comment"></i> <input type="text" name="impression" id="impression" placeholder="Comment" /><br>
 <button id="getad">お店を登録</button>
+</fieldset>
 </form>
 <div id="map_canvas" style='float:left' ></div>
 <div style='float:center'>
