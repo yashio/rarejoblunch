@@ -113,7 +113,8 @@
 $('.impress').editable('<?php echo Yii::app()->createurl('site/update')?>', {
      type   : 'text',
      submit : 'update',
-     cancel : 'cancle'
+     cancel : 'cancle',
+     tooltip   : 'Click to edit...'
  });
 
 
