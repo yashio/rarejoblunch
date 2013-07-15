@@ -1,22 +1,24 @@
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript">google.load("jquery", "1.3.2");</script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=ja" charset="UTF-8"></script>
+
+<script type="text/javascript" src="/js/jquery.jeditable.js"></script>
 <script type="text/javascript">
+
+
+
   /* クリック時の挙動を制御*/
-  function attachMessage(marker,msg) {
-    google.maps.event.addListener(marker, 'click', function() {
-      new google.maps.Geocoder().geocode({
-        latLng: marker.getPosition()
-      }, function(result, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          new google.maps.InfoWindow({
-		content: msg          
-		}).open(marker.getMap(), marker);
-        }
-      });
-    });
-  }
+	function attachMessage(marker,msg) {
+		google.maps.event.addListener(marker, 'click', function() {
+			new google.maps.Geocoder().geocode({
+				latLng: marker.getPosition()
+			}, function(result, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					new google.maps.InfoWindow({
+						content: msg          
+				}).open(marker.getMap(), marker);
+				}
+			});
+		});
+	}
+
 	var map, marker, infowindow;
 	/* ページ読み込み時に地図を初期化 */
 	$(function(){
@@ -47,7 +49,7 @@
 	var myOptions={
 		/*初期のズーム レベル */
 		zoom: 18,
-		/* 地図の中心点 */
+		/* 地図の中心点は会社 */
 		center: new google.maps.LatLng(35.65441980000001,139.70141490000003),
 		/* 地図タイプ */
     		mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -76,38 +78,46 @@
 		}
 	}
 
-$(document).ready(function() {
-/*住所を貼り付けてもらう処理*/
-$("#getad").click(function() {
-    var sad = $("#address").val();
-    var geocoder = new google.maps.Geocoder();
-    point = new google.maps.LatLng(0, 0);
-    var marker = new google.maps.Marker({
-      position: point,
-      map: map,
-      draggable: true
-    });
-   geocoder.geocode({ 'address': sad}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        map.setCenter(results[0].geometry.location);
-        var p = marker.position;
-	$.post("/site/add", { 
-		name: $("#name").val(),
-		impression: $("#impression").val(),
-		address: $("#address").val(),
-		kind: $("#kind").val(),
-		lat: results[ 0 ].geometry.location.lat(),
-		lng: results[ 0 ].geometry.location.lng(),
- })
-.done(function(data) {
-});
-      } else {
-        alert("住所から場所を特定できませんでした。最初にビル名などを省略し、番地までの検索などでお試しください。");
-      }
-    });
-    return false;
-  });
-});
+	$(document).ready(function() {
+		/*住所を貼り付けてもらう処理*/
+		$("#getad").click(function() {
+			var sad = $("#address").val();
+			var geocoder = new google.maps.Geocoder();
+			point = new google.maps.LatLng(0, 0);
+			var marker = new google.maps.Marker({
+			position: point,
+			map: map,
+			draggable: true
+			});
+			geocoder.geocode({ 'address': sad}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					map.setCenter(results[0].geometry.location);
+					var p = marker.position;
+					$.post("/site/add", { 
+						name: $("#name").val(),
+						impression: $("#impression").val(),
+						address: $("#address").val(),
+						kind: $("#kind").val(),
+						lat: results[ 0 ].geometry.location.lat(),
+						lng: results[ 0 ].geometry.location.lng(),
+					 })
+					.done(function(data) {
+					});
+      				} else {
+					alert("住所から場所を特定できませんでした。最初にビル名などを省略し、番地までの検索などでお試しください。");
+      				}
+    			});
+    			return false;
+  		});
+
+$('.impress').editable('<?php echo Yii::app()->createurl('site/update')?>', {
+     type   : 'text',
+     submit : 'update',
+     cancel : 'cancle'
+ });
+
+
+	});
 </script>
 
 <style type="text/css">
@@ -155,7 +165,7 @@ if($shop->kind ==2){
 $button ='btn btn-warning';
 }	
 echo '<td><button class="'.$button.'">'.$shop->name.'</button></td>';
-	echo '<td>'.$shop->impression.'</td>';
+	echo '<td class="impress" id="'.$shop->_id.'">'.$shop->impression.'</td>';
 echo '</tr>';	
 }
 

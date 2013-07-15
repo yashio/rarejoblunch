@@ -21,7 +21,10 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$shops = Shop::model()->findAll();
+		//新規追加のお店が先頭に来るようにセット
+		$criteria = new EMongoCriteria;
+		$criteria->sort('_id',EMongoCriteria::SORT_DESC);
+		$shops = Shop::model()->findAll($criteria);
 		$this->render('index',array('shops'=>$shops));
 	}
 
@@ -30,7 +33,6 @@ class SiteController extends Controller
 	 */
 	public function actionError()
 	{
-
 		if($error=Yii::app()->errorHandler->error)
 		{
 			if(Yii::app()->request->isAjaxRequest)
@@ -48,34 +50,6 @@ class SiteController extends Controller
 		$shop->lat     = $_POST['lat'];
 		$shop->lng     = $_POST['lng'];
 		$shop->kind     = $_POST['kind'];
-		var_dump($shop->save());
-//		$this->redirect('/site/index');
-			
-	}
-	/**
-	 * Displays the contact page
-	 */
-	public function actionContact()
-	{
-		$model=new ContactForm;
-		if(isset($_POST['ContactForm']))
-		{
-			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
-			{
-				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
-				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
-				$headers="From: $name <{$model->email}>\r\n".
-					"Reply-To: {$model->email}\r\n".
-					"MIME-Version: 1.0\r\n".
-					"Content-type: text/plain; charset=UTF-8";
-
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
-			}
-		}
-		$this->render('contact',array('model'=>$model));
 	}
 
 	/**
@@ -104,6 +78,18 @@ class SiteController extends Controller
 		$this->render('login',array('model'=>$model));
 	}
 
+	//ajaxでお店の印象を変更
+	public function actionUpdate(){
+		$id = $_POST['id'];
+		$value = $_POST['value'];	
+		$shop = new Shop();
+		$data = Shop::model()->findByPk($id);
+		if($data){
+			$data->impression=$value;
+			$data->save();
+		}
+		echo $value;
+	}
 	/**
 	 * Logs out the current user and redirect to homepage.
 	 */
